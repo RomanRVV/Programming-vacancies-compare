@@ -156,3 +156,9 @@ Scripts/
 
 Scripts
 images
+
+hh_records.json
+sj_records.json
+test.py
+.gitattributes
+pyvenv.cfg
