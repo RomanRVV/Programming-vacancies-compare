@@ -1,10 +1,8 @@
 import requests
 from itertools import count
 import time
-import json
 from dotenv import load_dotenv, find_dotenv
 import os
-import argparse
 
 programming_languages = [
     'Python',
@@ -75,26 +73,3 @@ def fetch_records_sj(language):
             break
 
     return vacancy
-
-
-def main():
-    parser = argparse.ArgumentParser(
-        description='Скачивает и сохраняет в json файлы статистику вакансий с сайтов SuperJob и HH'
-    )
-    parser.add_argument('--add_language', help='Добавить язык программирования для сбора статистики')
-    args = parser.parse_args()
-    if args.add_language:
-        programming_languages.append(args.add_language)
-    vacancy_hh = {}
-    vacancy_sj = {}
-    for language in programming_languages:
-        vacancy_hh[language] = fetch_records_hh(language)
-        vacancy_sj[language] = fetch_records_sj(language)
-    with open('hh_records.json', 'w', encoding='utf-8') as f:
-        json.dump(vacancy_hh, f, indent=2, ensure_ascii=False)
-    with open('sj_records.json', 'w', encoding='utf-8') as f:
-        json.dump(vacancy_sj, f, indent=2, ensure_ascii=False)
-
-
-if __name__ == '__main__':
-    main()
