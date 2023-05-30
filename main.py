@@ -7,7 +7,6 @@ import argparse
 def hh_average_salary_sorted_by_language(vacancies, language):
     vacancies_number = {}
     salaries = []
-
     for vacancies_info in vacancies:
         for vacancy_info in vacancies_info['items']:
             salary = predict_rub_salary_hh(vacancy_info)
@@ -31,7 +30,6 @@ def hh_average_salary_sorted_by_language(vacancies, language):
 def sj_average_salary_sorted_by_language(vacancies, language):
     vacancies_number = {}
     salaries = []
-
     for vacancies_info in vacancies:
         for vacancy_info in vacancies_info['objects']:
             salary = predict_rub_salary_sj(vacancy_info)
@@ -41,15 +39,21 @@ def sj_average_salary_sorted_by_language(vacancies, language):
                 salaries.append(salary)
         try:
             average_salary = sum(salaries) / len(salaries)
+            vacancies_number.update({
+                language: {
+                    "average_salary": int(average_salary),
+                    "vacancies_processed": len(salaries),
+                    "vacancies_found": vacancies_info['total']
+                }
+            })
         except ZeroDivisionError:
-            return f'По языку программирования {language} нет результатов'
-        vacancies_number.update({
-            language: {
-                "average_salary": int(average_salary),
-                "vacancies_processed": len(salaries),
-                "vacancies_found": vacancies_info['total']
-            }
-        })
+            vacancies_number.update({
+                language: {
+                    "average_salary": 'Нет результатов',
+                    "vacancies_processed": 'Нет результатов',
+                    "vacancies_found": 'Нет результатов'
+                }
+            })
     return vacancies_number
 
 
@@ -93,12 +97,12 @@ def main():
     )
     parser.add_argument('--add_language', help='Добавить язык программирования для сбора статистики')
     args = parser.parse_args()
+    if args.add_language:
+        programming_languages.append(args.add_language)
     vacancy_hh = {}
     vacancy_sj = {}
     vacancies_sj = []
     vacancies_hh = []
-    if args.add_language:
-        programming_languages.append(args.add_language)
     for language in programming_languages:
         vacancy_hh[language] = fetch_records_hh(language)
         vacancy_sj[language] = fetch_records_sj(language)
