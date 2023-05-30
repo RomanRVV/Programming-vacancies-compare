@@ -1,7 +1,7 @@
-import json
-from fetch_records import programming_languages
+from fetch_records import programming_languages, fetch_records_sj, fetch_records_hh
 from work_with_salary import predict_rub_salary_hh, predict_rub_salary_sj
 from terminaltables import AsciiTable
+import argparse
 
 
 def hh_average_salary_sorted_by_language(vacancies, language):
@@ -88,15 +88,20 @@ def salary_table_created_hh(salary_statistics):
 
 
 def main():
-    with open('hh_records.json', encoding='utf-8') as f:
-        vacancy_json_hh = f.read()
-    vacancy_hh = json.loads(vacancy_json_hh)
-    with open('sj_records.json', encoding='utf-8') as f:
-        vacancy_json_sj = f.read()
-    vacancy_sj = json.loads(vacancy_json_sj)
+    parser = argparse.ArgumentParser(
+        description='Скачивает и выводит зарплатную статистику вакансий с сайтов SuperJob и HH'
+    )
+    parser.add_argument('--add_language', help='Добавить язык программирования для сбора статистики')
+    args = parser.parse_args()
+    vacancy_hh = {}
+    vacancy_sj = {}
     vacancies_sj = []
     vacancies_hh = []
+    if args.add_language:
+        programming_languages.append(args.add_language)
     for language in programming_languages:
+        vacancy_hh[language] = fetch_records_hh(language)
+        vacancy_sj[language] = fetch_records_sj(language)
         vacancies_sj.append(sj_average_salary_sorted_by_language(vacancy_sj[language], language))
         vacancies_hh.append(hh_average_salary_sorted_by_language(vacancy_hh[language], language))
 
