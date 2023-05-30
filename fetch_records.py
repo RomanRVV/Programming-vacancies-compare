@@ -4,6 +4,7 @@ import time
 import json
 from dotenv import load_dotenv, find_dotenv
 import os
+import argparse
 
 programming_languages = [
     'Python',
@@ -77,6 +78,13 @@ def fetch_records_sj(language):
 
 
 def main():
+    parser = argparse.ArgumentParser(
+        description='Скачивает и сохраняет в json файлы статистику вакансий с сайтов SuperJob и HH'
+    )
+    parser.add_argument('--add_language', help='Добавить язык программирования для сбора статистики')
+    args = parser.parse_args()
+    if args.add_language:
+        programming_languages.append(args.add_language)
     vacancy_hh = {}
     vacancy_sj = {}
     for language in programming_languages:
