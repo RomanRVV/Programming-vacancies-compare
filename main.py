@@ -16,16 +16,12 @@ def sort_average_salary_hh_by_language(vacancies, language):
                 continue
             else:
                 salaries.append(average_salary)
-
-        total_average_salary = sum(salaries) / len(salaries)
-
-        vacancies_number.update({
-            language: {
-                "average_salary": int(total_average_salary),
-                "vacancies_processed": len(salaries),
-                "vacancies_found": vacancy['found']
-            }
-        })
+    total_average_salary = sum(salaries) / len(salaries)
+    vacancies_number[language] = {
+            "average_salary": int(total_average_salary),
+            "vacancies_processed": len(salaries),
+            "vacancies_found": vacancy['found']
+        }
     return vacancies_number
 
 
@@ -39,23 +35,19 @@ def sort_average_salary_sj_by_language(vacancies, language):
                 continue
             else:
                 salaries.append(average_salary)
-        try:
-            total_average_salary = sum(salaries) / len(salaries)
-            vacancies_number.update({
-                language: {
-                    "average_salary": int(total_average_salary),
-                    "vacancies_processed": len(salaries),
-                    "vacancies_found": vacancy['total']
-                }
-            })
-        except ZeroDivisionError:
-            vacancies_number.update({
-                language: {
-                    "average_salary": 'Нет результатов',
-                    "vacancies_processed": 'Нет результатов',
-                    "vacancies_found": 'Нет результатов'
-                }
-            })
+    try:
+        total_average_salary = sum(salaries) / len(salaries)
+        vacancies_number[language] = {
+                "average_salary": int(total_average_salary),
+                "vacancies_processed": len(salaries),
+                "vacancies_found": vacancy['total']
+            }
+    except ZeroDivisionError:
+        vacancies_number[language] = {
+                "average_salary": 'Нет результатов',
+                "vacancies_processed": 'Нет результатов',
+                "vacancies_found": 'Нет результатов'
+            }
     return vacancies_number
 
 
