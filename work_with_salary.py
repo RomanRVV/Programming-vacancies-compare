@@ -10,7 +10,10 @@ def predict_salary(salary_from, salary_to):
 
 def predict_rub_salary_hh(vacancy):
     salary_info = vacancy['salary']
-    salary = predict_salary(salary_info['from'], salary_info['to'])
+    try:
+        salary = predict_salary(salary_info['from'], salary_info['to'])
+    except TypeError:
+        return None
     if not salary_info['currency'] == 'RUR':
         return None
     else:
