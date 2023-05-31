@@ -2,9 +2,10 @@ from fetch_records import programming_languages, fetch_records_sj, fetch_records
 from work_with_salary import predict_rub_salary_hh, predict_rub_salary_sj
 from terminaltables import AsciiTable
 import argparse
+from dotenv import load_dotenv, find_dotenv
 
 
-def hh_average_salary_sorted_by_language(vacancies, language):
+def sort_average_salary_hh_by_language(vacancies, language):
     vacancies_number = {}
     salaries = []
     for vacancies_info in vacancies:
@@ -27,7 +28,7 @@ def hh_average_salary_sorted_by_language(vacancies, language):
     return vacancies_number
 
 
-def sj_average_salary_sorted_by_language(vacancies, language):
+def sort_average_salary_sj_by_language(vacancies, language):
     vacancies_number = {}
     salaries = []
     for vacancies_info in vacancies:
@@ -57,7 +58,7 @@ def sj_average_salary_sorted_by_language(vacancies, language):
     return vacancies_number
 
 
-def salary_table_created_sj(salary_statistics):
+def create_salary_table_sj(salary_statistics):
     title = 'SuperJob Moscow'
     table_data = [
         ['Язык программирования', ' Вакансий найдено', 'Вакансий обработано', 'Средняя зарплата']
@@ -74,7 +75,7 @@ def salary_table_created_sj(salary_statistics):
     return table_instance.table
 
 
-def salary_table_created_hh(salary_statistics):
+def create_salary_table_hh(salary_statistics):
     title = 'HeadHunter Moscow'
     table_data = [
         ['Язык программирования', ' Вакансий найдено', 'Вакансий обработано', 'Средняя зарплата']
@@ -92,6 +93,7 @@ def salary_table_created_hh(salary_statistics):
 
 
 def main():
+    load_dotenv(find_dotenv())
     parser = argparse.ArgumentParser(
         description='Скачивает и выводит зарплатную статистику вакансий с сайтов SuperJob и HH'
     )
@@ -106,11 +108,11 @@ def main():
     for language in programming_languages:
         vacancy_hh[language] = fetch_records_hh(language)
         vacancy_sj[language] = fetch_records_sj(language)
-        vacancies_sj.append(sj_average_salary_sorted_by_language(vacancy_sj[language], language))
-        vacancies_hh.append(hh_average_salary_sorted_by_language(vacancy_hh[language], language))
+        vacancies_sj.append(sort_average_salary_sj_by_language(vacancy_sj[language], language))
+        vacancies_hh.append(sort_average_salary_hh_by_language(vacancy_hh[language], language))
 
-    print(salary_table_created_sj(vacancies_sj))
-    print(salary_table_created_hh(vacancies_hh))
+    print(create_salary_table_sj(vacancies_sj))
+    print(create_salary_table_hh(vacancies_hh))
 
 
 if __name__ == '__main__':
