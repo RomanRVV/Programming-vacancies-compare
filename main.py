@@ -3,6 +3,7 @@ from work_with_salary import predict_rub_salary_hh, predict_rub_salary_sj
 from terminaltables import AsciiTable
 import argparse
 from dotenv import load_dotenv, find_dotenv
+import os
 
 
 def sort_average_salary_hh_by_language(vacancies, language):
@@ -94,6 +95,7 @@ def create_salary_table_hh(salary_statistics):
 
 def main():
     load_dotenv(find_dotenv())
+    superjob_key = os.environ['SUPERJOB_KEY']
     parser = argparse.ArgumentParser(
         description='Скачивает и выводит зарплатную статистику вакансий с сайтов SuperJob и HH'
     )
@@ -107,7 +109,7 @@ def main():
     vacancies_hh = []
     for language in programming_languages:
         vacancy_hh[language] = fetch_records_hh(language)
-        vacancy_sj[language] = fetch_records_sj(language)
+        vacancy_sj[language] = fetch_records_sj(language, superjob_key)
         vacancies_sj.append(sort_average_salary_sj_by_language(vacancy_sj[language], language))
         vacancies_hh.append(sort_average_salary_hh_by_language(vacancy_hh[language], language))
 

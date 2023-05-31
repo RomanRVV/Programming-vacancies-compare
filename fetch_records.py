@@ -1,7 +1,6 @@
 import requests
 from itertools import count
 import time
-import os
 
 programming_languages = [
     'Python',
@@ -48,12 +47,10 @@ def fetch_records_hh(language):
     return vacancies
 
 
-def fetch_records_sj(language):
-    superjob_key = os.environ['SUPERJOB_KEY']
-
+def fetch_records_sj(language, api_key):
     url = '	https://api.superjob.ru/2.0/vacancies/'
     headers = {
-        'X-Api-App-Id': superjob_key
+        'X-Api-App-Id': api_key
     }
     vacancies = []
     moscow_id_sj = 4
