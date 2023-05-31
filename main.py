@@ -9,21 +9,21 @@ import os
 def sort_average_salary_hh_by_language(vacancies, language):
     vacancies_number = {}
     salaries = []
-    for vacancies_info in vacancies:
-        for vacancy_info in vacancies_info['items']:
-            salary = predict_rub_salary_hh(vacancy_info)
-            if not salary:
+    for vacancy in vacancies:
+        for salary in vacancy['items']:
+            average_salary = predict_rub_salary_hh(salary)
+            if not average_salary:
                 continue
             else:
-                salaries.append(salary)
+                salaries.append(average_salary)
 
-        average_salary = sum(salaries) / len(salaries)
+        total_average_salary = sum(salaries) / len(salaries)
 
         vacancies_number.update({
             language: {
-                "average_salary": int(average_salary),
+                "average_salary": int(total_average_salary),
                 "vacancies_processed": len(salaries),
-                "vacancies_found": vacancies_info['found']
+                "vacancies_found": vacancy['found']
             }
         })
     return vacancies_number
@@ -32,20 +32,20 @@ def sort_average_salary_hh_by_language(vacancies, language):
 def sort_average_salary_sj_by_language(vacancies, language):
     vacancies_number = {}
     salaries = []
-    for vacancies_info in vacancies:
-        for vacancy_info in vacancies_info['objects']:
-            salary = predict_rub_salary_sj(vacancy_info)
-            if not salary:
+    for vacancy in vacancies:
+        for salary in vacancy['objects']:
+            average_salary = predict_rub_salary_sj(salary)
+            if not average_salary:
                 continue
             else:
-                salaries.append(salary)
+                salaries.append(average_salary)
         try:
-            average_salary = sum(salaries) / len(salaries)
+            total_average_salary = sum(salaries) / len(salaries)
             vacancies_number.update({
                 language: {
-                    "average_salary": int(average_salary),
+                    "average_salary": int(total_average_salary),
                     "vacancies_processed": len(salaries),
-                    "vacancies_found": vacancies_info['total']
+                    "vacancies_found": vacancy['total']
                 }
             })
         except ZeroDivisionError:
@@ -61,34 +61,34 @@ def sort_average_salary_sj_by_language(vacancies, language):
 
 def create_salary_table_sj(salary_statistics):
     title = 'SuperJob Moscow'
-    table_data = [
+    table = [
         ['Язык программирования', ' Вакансий найдено', 'Вакансий обработано', 'Средняя зарплата']
     ]
-    for count, salary_info in enumerate(salary_statistics):
-        language = [*salary_info.keys()]
-        table_data.append([*salary_info.keys(),
-                           salary_statistics[count][f'{language[0]}']['vacancies_found'],
-                           salary_statistics[count][f'{language[0]}']['vacancies_processed'],
-                           salary_statistics[count][f'{language[0]}']['average_salary']]
-                          )
-    table_instance = AsciiTable(table_data, title)
+    for count, salary in enumerate(salary_statistics):
+        language = [*salary.keys()]
+        table.append([*salary.keys(),
+                      salary_statistics[count][f'{language[0]}']['vacancies_found'],
+                      salary_statistics[count][f'{language[0]}']['vacancies_processed'],
+                      salary_statistics[count][f'{language[0]}']['average_salary']]
+                     )
+    table_instance = AsciiTable(table, title)
     table_instance.justify_columns[2] = 'right'
     return table_instance.table
 
 
 def create_salary_table_hh(salary_statistics):
     title = 'HeadHunter Moscow'
-    table_data = [
+    table = [
         ['Язык программирования', ' Вакансий найдено', 'Вакансий обработано', 'Средняя зарплата']
     ]
-    for count, salary_info in enumerate(salary_statistics):
-        language = [*salary_info.keys()]
-        table_data.append([*salary_info.keys(),
-                           salary_statistics[count][f'{language[0]}']['vacancies_found'],
-                           salary_statistics[count][f'{language[0]}']['vacancies_processed'],
-                           salary_statistics[count][f'{language[0]}']['average_salary']]
-                          )
-    table_instance = AsciiTable(table_data, title)
+    for count, salary in enumerate(salary_statistics):
+        language = [*salary.keys()]
+        table.append([*salary.keys(),
+                      salary_statistics[count][f'{language[0]}']['vacancies_found'],
+                      salary_statistics[count][f'{language[0]}']['vacancies_processed'],
+                      salary_statistics[count][f'{language[0]}']['average_salary']]
+                     )
+    table_instance = AsciiTable(table, title)
     table_instance.justify_columns[2] = 'right'
     return table_instance.table
 

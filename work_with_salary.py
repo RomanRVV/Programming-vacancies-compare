@@ -9,15 +9,15 @@ def predict_salary(salary_from, salary_to):
 
 
 def predict_rub_salary_hh(vacancy):
-    salary_info = vacancy['salary']
+    salary = vacancy['salary']
     try:
-        salary = predict_salary(salary_info['from'], salary_info['to'])
+        average_salary = predict_salary(salary['from'], salary['to'])
     except TypeError:
         return None
-    if not salary_info['currency'] == 'RUR':
+    if not salary['currency'] == 'RUR':
         return None
     else:
-        return salary
+        return average_salary
 
 
 def predict_rub_salary_sj(vacancy):
