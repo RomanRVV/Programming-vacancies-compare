@@ -22,9 +22,7 @@ def predict_rub_salary_hh(vacancy):
 
 def predict_rub_salary_sj(vacancy):
     salary = predict_salary(vacancy['payment_from'], vacancy['payment_to'])
-    if not vacancy['currency'] == 'rub':
-        return None
-    elif not salary:
+    if not vacancy['currency'] == 'rub' or not salary:
         return None
     else:
         return salary
