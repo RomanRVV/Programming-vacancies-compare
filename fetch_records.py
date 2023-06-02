@@ -2,7 +2,7 @@ import requests
 from itertools import count
 import time
 
-programming_languages = [
+PROGRAMMING_LANGUAGES = [
     'Python',
     'Java',
     'JavaScript',
@@ -14,7 +14,7 @@ programming_languages = [
 ]
 
 
-def fetch_records_hh(language):
+def fetch_vacancies_hh(language):
     url = 'https://api.hh.ru/vacancies'
     vacancies = []
     moscow_id_hh = 1
@@ -22,6 +22,7 @@ def fetch_records_hh(language):
     number_of_items_page = 100
     publication_date_limit = 30
     for page in count(0):
+        last_page = 19
         payload = {
             'professional_role': programmer_profession_id_hh,
             'per_page': number_of_items_page,
@@ -35,9 +36,7 @@ def fetch_records_hh(language):
             page_response.raise_for_status()
             page_payload = page_response.json()
             vacancies.append(page_payload)
-            if page >= page_payload['pages']:
-                break
-            elif page >= 19:
+            if page >= page_payload['pages'] or page >= last_page:
                 break
         except requests.exceptions.HTTPError:
 
@@ -47,7 +46,7 @@ def fetch_records_hh(language):
     return vacancies
 
 
-def fetch_records_sj(language, api_key):
+def fetch_vacancies_sj(language, api_key):
     url = '	https://api.superjob.ru/2.0/vacancies/'
     headers = {
         'X-Api-App-Id': api_key
