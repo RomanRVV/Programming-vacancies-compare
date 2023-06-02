@@ -28,10 +28,9 @@ pip install -r requirements.txt
 Для скачивания вакансии с сайтов [HH](https://hh.ru/) и [SuperJob](https://www.superjob.ru/) и последующий вывод
 таблицы со статистикой по вакансиям, нужно запустить `main.py`. По умолчанию статистика собирается
 по 8 популярным языкам программирования(Python, Java, JavaScript, 1c,
-PHP, C++, C#, C), но при желании с помощью аргумента `--add_language`, можно
-добавить язык, который вам необходим.
+PHP, C++, C#, C)
 ```
-Python main.py --add_language swift
+Python main.py 
 ```
 (Пример запуска скрипта)
 
