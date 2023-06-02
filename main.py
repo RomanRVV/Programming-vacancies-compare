@@ -1,4 +1,4 @@
-from fetch_records import PROGRAMMING_LANGUAGES, fetch_vacancies_sj, fetch_vacancies_hh
+from fetch_vacancies import PROGRAMMING_LANGUAGES, fetch_vacancies_sj, fetch_vacancies_hh
 from work_with_salary import predict_rub_salary_hh, predict_rub_salary_sj
 from terminaltables import AsciiTable
 from dotenv import load_dotenv, find_dotenv
